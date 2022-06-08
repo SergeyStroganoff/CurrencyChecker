@@ -1,6 +1,7 @@
 package com.stroganov.currencychecker.service.impl;
 
 import com.stroganov.currencychecker.clients.ExchangeRatesClient;
+import com.stroganov.currencychecker.models.DalyRates;
 import com.stroganov.currencychecker.service.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +13,9 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Value("${openexchangerates.id}")
     private String appId;
 
+    @Value("${baseCurrency}")
+    private String baseCurrency;
+
     ExchangeRatesClient exchangeRatesClient;
 
     @Autowired
@@ -21,7 +25,7 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public String getExchangeRate(String currency) {
-        String result = exchangeRatesClient.getExchangeRate(appId);
-        return result != null ? result : "null";
+        DalyRates result = exchangeRatesClient.getExchangeRate(appId,baseCurrency);
+        return result != null ? result.toString() : "null";
     }
 }
