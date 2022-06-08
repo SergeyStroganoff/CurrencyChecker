@@ -33,7 +33,10 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    implementation 'io.pivotal.spring.cloud:spring-cloud-services-dependencies:3.4.1'
 }
+
+
 
 dependencyManagement {
     imports {
