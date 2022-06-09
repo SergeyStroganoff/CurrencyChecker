@@ -1,6 +1,9 @@
 package com.stroganov.currencychecker.service;
 
-public interface CurrencyService {
+import com.stroganov.currencychecker.models.DalyRates;
 
-    String getExchangeRate(String currency);
+public interface CurrencyService {
+    DalyRates getLatestDailyRate(String currency);
+
+    DalyRates getDayBeforeExchangeRate(String currency);
 }

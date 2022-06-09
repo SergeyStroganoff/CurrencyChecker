@@ -1,5 +1,6 @@
 package com.stroganov.currencychecker.controllers;
 
+import com.stroganov.currencychecker.models.DalyRates;
 import com.stroganov.currencychecker.service.CurrencyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,22 +21,27 @@ public class MainRestController {
     @Value("${exception.feignException.message}")
     private String message;
 
+    @Value("${baseCurrency}")
+    private String baseCurrency;
+
     @Autowired
     CurrencyService currencyService;
 
     @GetMapping("fast-result")
-    public ResponseEntity<String> getExchangeRate(@PathParam("currency") String currency) {
-        if (currency != null) {
-            return ResponseEntity.ok(currencyService.getExchangeRate(currency));
+    public ResponseEntity<?> getExchangeRate(@PathParam("currency") String currency) throws InterruptedException {
+        DalyRates todayRates = currencyService.getLatestDailyRate(baseCurrency);
+        DalyRates yesterdayRates = currencyService.getDayBeforeExchangeRate(baseCurrency);
+        if (!todayRates.getRates().containsKey(currency)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        boolean isTodayCurrencyPriseHigherThenYesterday = Double.compare(todayRates.getRates().get(currency), yesterdayRates.getRates().get(currency)) > 1;
+        if (isTodayCurrencyPriseHigherThenYesterday) {
+            return ResponseEntity.ok("Yes, it is higher than yesterday");
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.ok("No it is lower today");
         }
     }
 
-    @GetMapping("/")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok(message);
-    }
 
 }
 

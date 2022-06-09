@@ -19,10 +19,8 @@ public class DefaultAdvice {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
     }
 
-
     @ExceptionHandler(PageNotFoundException.class)
     public ResponseEntity<String> handleUserNotExistException(PageNotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
-
 }
