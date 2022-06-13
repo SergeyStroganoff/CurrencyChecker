@@ -27,7 +27,7 @@ class GiphyClientTest {
     private String giphyId;
 
     @Test
-    void getGiphy() throws JsonProcessingException {
+    void When_getGiphy_then_originalGiphy_getLink_startsWith_https() throws JsonProcessingException {
         //GIVEN
         String tag = "rich";
         //WHEN
@@ -36,6 +36,7 @@ class GiphyClientTest {
         JsonNode nodeImages = nodeData.get("images");
         JsonNode nodeOriginal = nodeImages.get("original_mp4");
         OriginalGiphy originalGiphy = mapper.readValue(nodeOriginal.toString(), OriginalGiphy.class);
+        //THEN
         Assertions.assertTrue(originalGiphy.getLink().startsWith("https"));
     }
 }

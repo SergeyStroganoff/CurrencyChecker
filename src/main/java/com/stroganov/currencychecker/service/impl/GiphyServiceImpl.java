@@ -1,5 +1,7 @@
 package com.stroganov.currencychecker.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stroganov.currencychecker.clients.GiphyClient;
 import com.stroganov.currencychecker.models.OriginalGiphy;
@@ -26,7 +28,16 @@ public class GiphyServiceImpl implements GiphyService {
 
     @Override
     public OriginalGiphy getGiphyByTag(String tag) {
-
-        return null;
+        JsonNode node = giphyClient.getGiphy(giphyId, tag);
+        JsonNode nodeData = node.get("data");
+        JsonNode nodeImages = nodeData.get("images");
+        JsonNode nodeOriginal = nodeImages.get("original_mp4");
+        OriginalGiphy originalGiphy = null;
+        try {
+            originalGiphy = mapper.readValue(nodeOriginal.toString(), OriginalGiphy.class);
+        } catch (JsonProcessingException e) {
+            logger.error(e);
+        }
+        return originalGiphy;
     }
 }
