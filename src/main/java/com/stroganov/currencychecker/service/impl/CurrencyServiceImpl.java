@@ -16,10 +16,9 @@ import java.time.format.DateTimeFormatter;
 public class CurrencyServiceImpl implements CurrencyService {
 
     private final Logger logger = LogManager.getLogger(CurrencyServiceImpl.class);
+    private final ExchangeRatesClient exchangeRatesClient;
     @Value("${openexchangerates.id}")
     private String appId;
-
-    private final ExchangeRatesClient exchangeRatesClient;
 
     @Autowired
     public CurrencyServiceImpl(ExchangeRatesClient exchangeRatesClient) {

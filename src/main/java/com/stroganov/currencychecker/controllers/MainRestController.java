@@ -1,7 +1,9 @@
 package com.stroganov.currencychecker.controllers;
 
 import com.stroganov.currencychecker.models.DalyRates;
+import com.stroganov.currencychecker.models.OriginalGiphy;
 import com.stroganov.currencychecker.service.CurrencyService;
+import com.stroganov.currencychecker.service.GiphyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,22 +28,19 @@ public class MainRestController {
 
     @Autowired
     CurrencyService currencyService;
+    @Autowired
+    GiphyService giphyService;
 
     @GetMapping("fast-result")
-    public ResponseEntity<?> getExchangeRate(@PathParam("currency") String currency) throws InterruptedException {
+    public ResponseEntity<?> getExchangeRate(@PathParam("currency") String currency) {
         DalyRates todayRates = currencyService.getLatestDailyRate(baseCurrency);
         DalyRates yesterdayRates = currencyService.getDayBeforeExchangeRate(baseCurrency);
         if (!todayRates.getRates().containsKey(currency)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         boolean isTodayCurrencyPriseHigherThenYesterday = Double.compare(todayRates.getRates().get(currency), yesterdayRates.getRates().get(currency)) > 1;
-        if (isTodayCurrencyPriseHigherThenYesterday) {
-            return ResponseEntity.ok("Yes, it is higher than yesterday");
-        } else {
-            return ResponseEntity.ok("No it is lower today");
-        }
+        OriginalGiphy giphy = isTodayCurrencyPriseHigherThenYesterday ? giphyService.getGiphyByTag("rich") : giphyService.getGiphyByTag("broke");
+        return ResponseEntity.ok(giphy);
     }
-
-
 }
 
