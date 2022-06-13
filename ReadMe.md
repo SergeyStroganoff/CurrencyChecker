@@ -14,3 +14,12 @@ that provides rates for about 120 currencies using USD as base.
 
 ## How to Use##
 
+API URL
+/exchange-rates/dynamics/fast-result:
+get:
+summary: "GET exchange-rates/dynamics/fast-result"
+operationId: "getExchangeRate"
+responses:
+"200":
+description: "OK"
+
