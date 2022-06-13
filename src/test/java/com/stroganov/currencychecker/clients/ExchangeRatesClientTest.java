@@ -15,7 +15,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @SpringBootTest
-@AutoConfigureMockMvc(addFilters = false)
 @ExtendWith(SpringExtension.class)
 class ExchangeRatesClientTest {
 

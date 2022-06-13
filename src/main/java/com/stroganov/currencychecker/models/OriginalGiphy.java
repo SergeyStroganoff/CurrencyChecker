@@ -1,7 +1,6 @@
 package com.stroganov.currencychecker.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,16 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OriginalGiphy {
     private String height;
+    @JsonAlias({"mp4"})
     private String link;
+    @JsonAlias({"mp4_size"})
     private String size;
     private String width;
-
-    @JsonCreator
-    public OriginalGiphy(@JsonProperty("height") String height, @JsonProperty("mp4") String link,
-                         @JsonProperty("mp4_size") String size, @JsonProperty("width") String width) {
-        this.height = height;
-        this.link = link;
-        this.size = size;
-        this.width = width;
-    }
 }

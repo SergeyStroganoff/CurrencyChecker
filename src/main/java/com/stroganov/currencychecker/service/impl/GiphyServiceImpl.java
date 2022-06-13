@@ -15,11 +15,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class GiphyServiceImpl implements GiphyService {
     private final Logger logger = LogManager.getLogger(GiphyServiceImpl.class);
-    private static final ObjectMapper mapper = new ObjectMapper();
-    GiphyClient giphyClient;
+    private final ObjectMapper mapper;
+    private final GiphyClient giphyClient;
 
     @Autowired
-    public GiphyServiceImpl(GiphyClient giphyClient) {
+    public GiphyServiceImpl(ObjectMapper mapper, GiphyClient giphyClient) {
+        this.mapper = mapper;
         this.giphyClient = giphyClient;
     }
 
@@ -29,9 +30,7 @@ public class GiphyServiceImpl implements GiphyService {
     @Override
     public OriginalGiphy getGiphyByTag(String tag) {
         JsonNode node = giphyClient.getGiphy(giphyId, tag);
-        JsonNode nodeData = node.get("data");
-        JsonNode nodeImages = nodeData.get("images");
-        JsonNode nodeOriginal = nodeImages.get("original_mp4");
+        JsonNode nodeOriginal = node.at("/data/images/original_mp4");
         OriginalGiphy originalGiphy = null;
         try {
             originalGiphy = mapper.readValue(nodeOriginal.toString(), OriginalGiphy.class);

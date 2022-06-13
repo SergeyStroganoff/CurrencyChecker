@@ -32,7 +32,7 @@ public class MainRestController {
     GiphyService giphyService;
 
     @GetMapping("fast-result")
-    public ResponseEntity<?> getExchangeRate(@PathParam("currency") String currency) {
+    public ResponseEntity<OriginalGiphy> getExchangeRate(@PathParam("currency") String currency) {
         DalyRates todayRates = currencyService.getLatestDailyRate(baseCurrency);
         DalyRates yesterdayRates = currencyService.getDayBeforeExchangeRate(baseCurrency);
         if (!todayRates.getRates().containsKey(currency)) {
